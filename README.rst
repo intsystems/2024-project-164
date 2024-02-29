@@ -24,7 +24,7 @@
 Abstract
 ========
 
-Purus sit amet luctus venenatis lectus magna fringilla. Condimentum id venenatis a condimentum vitae sapien. Auctor neque vitae tempus quam pellentesque nec nam aliquam. Eget egestas purus viverra accumsan in. Nam aliquam sem et tortor. Donec et odio pellentesque diam volutpat commodo. Odio pellentesque diam volutpat commodo sed egestas. Sit amet dictum sit amet justo. Pellentesque sit amet porttitor eget. Imperdiet sed euismod nisi porta lorem mollis aliquam ut. Quis varius quam quisque id diam vel quam elementum. Ornare lectus sit amet est placerat in. Vulputate dignissim suspendisse in est ante. Elit sed vulputate mi sit amet mauris. Egestas sed tempus urna et pharetra pharetra. Viverra tellus in hac habitasse platea dictumst vestibulum rhoncus.
+Рассматривается задача сопоставления информативных векторных представлений коллекций данных. Исходный датасет состоит из пар $(x_i, y_i)$, где $x_i \in X$ и $y_i \in \{1, ..., K\}$. Из точек данных датасета составляются группы $G_{j, k} = \{x_i | (x_i, y_i) \in \mathfrak{G} \wedge y_i = k \forall i \} : \forall j_1, j_2 G_{j_1, k} \cap G_{j_2, k} = \emptyset$. Задача состоит в том, чтобы сопоставить каждой группе эмбеддинг $f_{\theta}(G_{j, k})$, представляющий собой информативное векторное представление $G_{j, k}$. 
 
 Research publications
 ===============================
