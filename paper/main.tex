@@ -1,158 +1,200 @@
 \documentclass{article}
-\usepackage{arxiv}
 
 \usepackage[utf8]{inputenc}
-\usepackage[english, russian]{babel}
 \usepackage[T1]{fontenc}
+\usepackage{hyperref}
 \usepackage{url}
 \usepackage{booktabs}
 \usepackage{amsfonts}
 \usepackage{nicefrac}
 \usepackage{microtype}
+\usepackage{cleveref}
 \usepackage{lipsum}
 \usepackage{graphicx}
-\usepackage{natbib}
+\usepackage[english, russian]{babel}
+\usepackage{biblatex} %Imports biblatex package
+\addbibresource{references.bib}
+
+
 \usepackage{doi}
+\newtheorem{theorem}{Теорема}
 
 
-
-\title{A template for the \emph{arxiv} style}
-
-\author{ David S.~Hippocampus\thanks{Use footnote for providing further
-		information about author (webpage, alternative
-		address)---\emph{not} for acknowledging funding agencies.} \\
-	Department of Computer Science\\
-	Cranberry-Lemon University\\
-	Pittsburgh, PA 15213 \\
-	\texttt{hippo@cs.cranberry-lemon.edu} \\
-	%% examples of more authors
-	\And
-	Elias D.~Striatum \\
-	Department of Electrical Engineering\\
-	Mount-Sheikh University\\
-	Santa Narimana, Levand \\
-	\texttt{stariate@ee.mount-sheikh.edu} \\
-	%% \AND
-	%% Coauthor \\
-	%% Affiliation \\
-	%% Address \\
-	%% \texttt{email} \\
-	%% \And
-	%% Coauthor \\
-	%% Affiliation \\
-	%% Address \\
-	%% \texttt{email} \\
-	%% \And
-	%% Coauthor \\
-	%% Affiliation \\
-	%% Address \\
-	%% \texttt{email} \\
-}
-\date{}
-
-\renewcommand{\shorttitle}{\textit{arXiv} Template}
-
-%%% Add PDF metadata to help others organize their library
-%%% Once the PDF is generated, you can check the metadata with
-%%% $ pdfinfo template.pdf
-\hypersetup{
-pdftitle={A template for the arxiv style},
-pdfsubject={q-bio.NC, q-bio.QM},
-pdfauthor={David S.~Hippocampus, Elias D.~Striatum},
-pdfkeywords={First keyword, Second keyword, More},
-}
+\title{Обучение представлению коллекций данных}
+\author{Каримов П.Д.\\Научный руководитель: Исаченко Р.В.}
+\date{April 2024}
 
 \begin{document}
+
 \maketitle
 
 \begin{abstract}
-	\lipsum[1]
+    В данной статье рассматривается задача сопоставления векторных представлений коллекций точек данных. Исходный набор данных состоит из размеченных пар - признаков и соответствующих им значений целевой переменной. Для достижения данной цели, рассматриваются оптимально обученные представления, которые позволяют преобразовать коллекции в векторном пространстве посредством аггрегации векторов-объектов, которые принадлежат соответствующим коллекциям. В качестве метрики качества применяется расстояние между векторами-представлениями групп. 
 \end{abstract}
 
+\section{Введение}
 
-\keywords{First keyword \and Second keyword \and More}
+Эффективность методов машинного обучения в значительной степени
+зависит от выбора представления данных (или признаков),
+на которых они применяются. По этой причине большая часть фактических
+усилий по внедрению алгоритмов машинного обучения направлена на
+разработку конвейеров предварительной обработки и преобразования данных \cite{10.1145/3514221.3517848}, \cite{Li2019PreprocessingMA}, которые
+в результате чего создается представление данных, способное поддерживать эффективное
+машинного обучения. Такая разработка характеристик важна, но
+трудоемкое и подчеркивает слабость нынешних алгоритмов обучения: их неспособность извлекать информацию из данных.
+неспособность извлечь и систематизировать дискриминационную информацию из данных.
 
-\section{Introduction}
-\lipsum[2]
-\lipsum[3]
+Эта статья посвящена обучению представлениям, т.е. обучению
+представлений данных, которые облегчают извлечение полезной
+информации при построении классификаторов или других предсказателей. В случае с вероятностными моделями хорошим представлением часто является
+такое, которое отражает апостериорное распределение базовых объясняющих факторов для наблюдаемых входных данных. Хорошее представление также полезно в качестве входных данных для контролируемого предиктора \cite{Devlin2019BERTPO}.
+Среди различных способов обучения представлениям в данной статье
+фокусируется на методах глубокого обучения \cite{baghaei2022deep}: тех, которые формируются путем
+композицией множества нелинейных преобразований, с
+целью получения более абстрактных представлений.
 
-\section{Headings: first level}
-\label{sec:headings}
+В рамках статьи решается задача сопоставления представлений коллекциям точек данных. Данная проблема в литературе обычно решается косвенно в рамках некоторой целевой задачи \cite{GroupFace}, \cite{Pang2022UnsupervisedVR}. Можно выделить 2 способа её решения:
 
-\lipsum[4] See Section \ref{sec:headings}.
-
-\subsection{Headings: second level}
-\lipsum[5]
-\begin{equation}
-	\xi _{ij}(t)=P(x_{t}=i,x_{t+1}=j|y,v,w;\theta)= {\frac {\alpha _{i}(t)a^{w_t}_{ij}\beta _{j}(t+1)b^{v_{t+1}}_{j}(y_{t+1})}{\sum _{i=1}^{N} \sum _{j=1}^{N} \alpha _{i}(t)a^{w_t}_{ij}\beta _{j}(t+1)b^{v_{t+1}}_{j}(y_{t+1})}}
-\end{equation}
-
-\subsubsection{Headings: third level}
-\lipsum[6]
-
-\paragraph{Paragraph}
-\lipsum[7]
-
-
-
-\section{Examples of citations, figures, tables, references}
-\label{sec:others}
-
-\subsection{Citations}
-Citations use \verb+natbib+. The documentation may be found at
-\begin{center}
-	\url{http://mirrors.ctan.org/macros/latex/contrib/natbib/natnotes.pdf}
-\end{center}
-
-Here is an example usage of the two main commands (\verb+citet+ and \verb+citep+): Some people thought a thing \citep{kour2014real, hadash2018estimate} but other people thought something else \citep{kour2014fast}. Many people have speculated that if we knew exactly why \citet{kour2014fast} thought this\dots
-
-\subsection{Figures}
-\lipsum[10]
-See Figure \ref{fig:fig1}. Here is how you add footnotes. \footnote{Sample of the first footnote.}
-\lipsum[11]
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.5\textwidth]{../figures/log_reg_cs_exp.eps}
-	\caption{Sample figure caption.}
-	\label{fig:fig1}
-\end{figure}
-
-\subsection{Tables}
-See awesome Table~\ref{tab:table}.
-
-The documentation for \verb+booktabs+ (`Publication quality tables in LaTeX') is available from:
-\begin{center}
-	\url{https://www.ctan.org/pkg/booktabs}
-\end{center}
-
-
-\begin{table}
-	\caption{Sample table title}
-	\centering
-	\begin{tabular}{lll}
-		\toprule
-		\multicolumn{2}{c}{Part}                   \\
-		\cmidrule(r){1-2}
-		Name     & Description     & Size ($\mu$m) \\
-		\midrule
-		Dendrite & Input terminal  & $\sim$100     \\
-		Axon     & Output terminal & $\sim$10      \\
-		Soma     & Cell body       & up to $10^6$  \\
-		\bottomrule
-	\end{tabular}
-	\label{tab:table}
-\end{table}
-
-\subsection{Lists}
 \begin{itemize}
-	\item Lorem ipsum dolor sit amet
-	\item consectetur adipiscing elit.
-	\item Aliquam dignissim blandit est, in dictum tortor gravida eget. In ac rutrum magna.
+    \item Учёт векторов коллекций при обучении \cite{Pang2022UnsupervisedVR}
+    \item Рассмотрение требуемых представлений после обучения на уровне объектов \cite{SiameseNetworks}
 \end{itemize}
 
+В работе рассматривается последний подход, вектор коллекции получается посредством аггрегации векторов объектов, которые этой коллекции принадлежат. Качество метода проверяется на основе расстояния между представлениями коллекций в результирующем пространстве.
+
+\section{Постановка задачи}
+
+Пусть дан датасет $\mathfrak{G} = \{(x_i, y_i)\}_{i = 1}^{n}$, $x_i \in X$, $y_i \in \{1, ..., K\}$. Составим из этих точек данных множества: \\
+        $$G_{j, k} = \{x_i | (x_i, y_i) \in \mathfrak{G} \wedge y_i = k \forall i \} : \forall j_1, j_2 G_{j_1, k} \cap G_{j_2, k} = \emptyset.$$
+        
+Наша задача состоит в том, чтобы сопоставить каждой группе $G_{j, k}$ эмбеддинг $f_{\theta}(G_{j, k})$, представляющий собой информативное векторное представление $G_{j, k}$. Определение ``информативного'' в задаче обучения представлениям обычно формулируется под конкретную задачу \cite{Bengio2012RepresentationLA}, обычно полагают, что в рамках такого представления ``близкие'' в каком-то смысле объекты находятся в пространстве представлений близко, а ``далёкие'' --- далеко.
+
+\section{Существующие работы}
+
+Данная задача обычно применяется к задаче объектного различения (instance discrimination \cite{GroupFace}) для учёта групповой информации между объектами для улучшения качества результирующей модели. Ниже представлены общие описания рассмотренных статей.
+
+\subsection{\href{https://arxiv.org/pdf/2207.06167v1.pdf}{Unsupervised Visual Representation Learning
+by Synchronous Momentum Grouping}}
+
+Обычно это делается минимизацией функции потерь, которая учитывает взаимодействия между объектами в выборке:
+$$
+L_i = - \log \frac{\exp(\mathrm{sim}(f_\theta(x_i^a), f_\theta(x_i^b)))}{\sum_j \exp(\mathrm{sim}(f_\theta(x_i^a), f_\theta(x_j)))}.
+$$
+
+Можно попробовать обобщить представленную функцию до уровня коллекций, чтобы получить для них представления:
+
+$$
+L_i = - \log \frac{\exp(\mathrm{sim}(c_i^a, c_i^b))}{\sum_j \exp(\mathrm{sim}(c_i^a, g_j))}.
+$$
+
+Но если пытаться делать так --- некоторые объекты могут быть близки одновременно нескольким группам, и качество полученных представлений будет неудовлетворительным.
+
+Если же задача состоит в том, чтобы коллекции были таки существенно разные (с точки зрения объектов, которые хочется этим группам соотнести) --- стоит рассматривать collection-item функцию:
+
+$$
+L_i = - \log \frac{\exp(\mathrm{sim}(f_\theta(x_i^a), c_i^b)}{\sum_j \exp(\mathrm{sim}(f_\theta(x_i^a), g_j))}.
+$$
+
+Здесь $x_i^a$ - характеристики $a$-ого объекта, принадлежащего $i$-ому классу; $c_i^b$ - групповая характеристика $b$-го объекта.
+
+Таким образом, мы пытаемся приблизить объекты коллекции к ней самой, и отдалить эти объекты от других групп.
+
+Коллекции инициализируются, например, алгоритмом кластеризации. Обновляются они следующим образом:
+
+\begin{center}
+$
+c_i = \arg \min_{g_k}\mathrm{sim}(f_{\theta}(x_i), g_k) \\
+g_k \leftarrow \beta g_k + (1 - \beta) \mathrm{mean}_{c_t = g_k} f_{\theta}(x_t).
+$
+\end{center}
+
+Такой способ позволяет через дифференцируемым образом обновлять представления коллекций, и этим отличается от аналогов, которые приводятся в указанной статье.
+
+Поскольку составленные таким образом группы могут сколлапсировать из-за того, что на каждом шаге мы движемся по батчу - авторы предлагают периодически перегруппировывать центроиды.
+
+\subsection{\href{https://arxiv.org/pdf/2005.10497v2.pdf}{GroupFace: Learning Latent Groups and Constructing Group-based
+Representations for Face Recognition}}
+
+В этой статье авторы предлагают к эмбедам инстансным добавлять прямо групповые фичи (явно), представляя специфическую архитектуру сети. 
+
+В качестве функции потерь рассматривается сумма классификационной (CE-функция потерь) и репрезентационной (ArcFace-функция потерь) с определёнными весами. 
+
+Специфичным образом определяется принадлежность к коллекции, пытаясь адресовать неравномерность распределения по ним - не 
+$\arg\max_k p(G_k | x)$, а $\arg\max_k \frac{1}{K}(p(G_k | x) - \mathbb{E}[p(G_k | x)]) + \frac{1}{K}$.
+Перескоринг интуитивно обосновывается тем, что матожидание представленной величины равно $\frac{1}{K}$.
+
+\subsection{\href{https://arxiv.org/pdf/1912.00385.pdf}{The Group Loss for Deep Metric Learning}}
+
+В этой статье авторы ставят в противовес контрастивной или триплетной функции потерь - классическому выбору в обучении представлениям, свою, которая каждому объекту в батче сопоставляет группу. Делается это доставанием характеристик из нейронной сети, подачей софтмакс-вероятностей как начальному приближению их классов и запуском определённого итерационного процесса. По окончании результат вместе с меткой подаются в кроссэнтропийную функции потерь, и осуществляется обновление весов посредством алгоритма обратного распространения.
+
+\section{Теоретические результаты}
+
+В рамках представленной задачи было решено посмотреть в сторону того, что будет, если мы оптимально потренируем представления на уровне объектов, например:
+
+\begin{theorem}
+
+    Пусть мы имеем оптимально обученную функцию представления объектов $f_{\theta}(x)$ с точки зрения Triplet loss-а, то есть для любого айтема $x_a$, его позитива $x_p$ и негатива $x_n$ верно, что
+    $$
+    \exists m : ||f_{\theta}(x_a) - f_{\theta}(x_p)|| - ||f_{\theta}(x_a) - f_{\theta}(x_n)|| \leq m \quad \forall (a, p, n).
+    $$
+
+    Рассмотрим группы $G_{j_1, k_1}, G_{j_2, k_1}, G_{p_1, k_2}$, в качестве эмбеддинга группы возьмём $f_{\theta}(G_{j, k}) = \frac{1}{|G_{j, k}|}\sum_{x \in G_{j, k}}f_\theta(x)$. Тогда
+
+    $$
+    || f_{\theta}(G_{j_1, k_1}) - f_{\theta}(G_{j_2, k_1}) || \leq 2\max\{m, \max_{s_1 \in G_{j_1, k_1}, s_2 \in G_{p_1, k_2}}{||f_{\theta}(s_1) - f_{\theta}(s_2)||}\}.
+    $$
+
+\end{theorem}
+% \begin{equation}
+% ||\frac{1}{|G_{j_1, k_1}|}\sum_{x \in G_{j_1, k_1}}f_{\theta}(x) - \frac{1}{|G_{p_1, k_2}|}\sum_{x \in G_{p_1, k_2}}f_{\theta}(x)|| \geq \max\{0, -m\}
+% \end{equation}
+
+Таким образом, выбор представления группы как среднего арифметического поайтемных эмбедов в случае, если $m < 0$, является в какой-то степени оправданным. Отметим, однако, что в теореме ничего не упоминается про расстояние с центроидом отрицательного примера ещё, в этом направлении ещё предстоят некоторые исследования.
+
+\section{План эксперимента}
+
+Целью эксперимента является проверка качества представлений коллекций на основе расстояния между ними.
+
+Датасет Omniglot \cite{doi:10.1126/science.aab3050} содержит 1623 различных рукописных символа из 50 различных алфавитов. Каждый из 1623 символов был нарисован в режиме онлайн через Amazon's Mechanical Turk 20 разными людьми. Для этого датасета обычно в качестве аугментации данных применяют повороты на 90,180,270 градусов.
+Каждый алфавит в представленной постановке можно использовать как группу $G_k$, в качестве групп $G_{j, k}$ взяв подмножество элементов, принадлежащих одной букве. Таким образом, мы получим необходимые нам группы.
+
+В качестве функции представления возьмём нейронную сеть (предварительно обучим её), после чего проанализируем значения $||f_\theta(G_{j_1, k_1}) - f_\theta(G_{j_2, k_1})||$ и $\max_{s_1 \in G_{j_1, k_1}, s_2 \in G_{p_1, k_2}}{||f_{\theta}(s_1) - f_{\theta}(s_2)||}$.
+
+В качестве метрики качества будем рассматривать среднее нормы разности между эмбеддингами групп. В случае рассмотрения групп в рамках одного алфавита следует добавить так же верхнюю оценку на норму разности между ними (см. теорему (1)).
+
+\section{Детали эксперимента}
+
+В качестве архитектуры нейронной сети взята модель EfficientNet\_b2 (\cite{tan2020efficientnet}), для триплетной функции потерь взят отступ (margin) равный 1000. Нейронная сеть обучалась в течении X итераций, во время обучения применяется внутрипачечный hard-negative mining (\cite{Bootstrapping}).
+
+Результаты эксперимента продемонстрированы несколькими примерами оценок, которые предлагалось получить выше.
+\newline
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+
+\begin{tabular}[H]{ | c | c | }
+ \hline
+ $||f_\theta(G_{j_1, k_1}) - f_\theta(G_{j_2, k_1})||$ & $\max{||f_{\theta}(s_1) - f_{\theta}(s_2)||}$\\
+ \hline
+  734.82 & 1750.37 \\
+  280.37 & 1907.42 \\
+  254.03 & 3338.06\\
+ \hline
+\end{tabular}
+\end{center}
+
+
+По этим данным видно, что полученная теоретическая оценка оказалась довольно грубой, и требуется больше исследований в этой области.
+
+\section{Дальнейшие планы}
+
+В дальнейшем планируется получить более точную верхнюю границу для разницы между представлениями коллекций, а также получение нижней границы между ними. Кроме того, планируется получить результаты с выбором других функций представления коллекций (например, медоид) и связанных с ними теоретических результатов.
+
+\newpage
+\nocite{*}
 
 \bibliographystyle{unsrtnat}
-\bibliography{references}
+\printbibliography
+
 
 \end{document}
